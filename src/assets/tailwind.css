@@ -1,0 +1,58 @@
+/* crimson-text serif */
+/* monserrat sans-serif */
+/* iosevka-charon monospace */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Iosevka+Charon:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-serif: "Crimson Text", "serif";
+  --font-sans: "PT Sans", "sans-serif";
+  --font-mono: "Iosevka Charon", "monospace";
+  --breakpoint-3xl: 120rem;
+  /* ... */
+}
+
+@layer base {
+  a {
+    @apply text-blue-800;
+  }
+
+  p {
+    @apply font-serif;
+    @apply text-justify;
+    @apply hyphens-auto;
+  }
+
+  h1 {
+    @apply text-3xl;
+    @apply font-bold;
+  }
+
+  h2 {
+    @apply text-2xl;
+    @apply font-semibold;
+  }
+
+  h3 {
+    @apply text-xl;
+    @apply font-semibold;
+  }
+
+  h4 {
+    @apply text-lg;
+    @apply uppercase;
+    @apply font-semibold;
+  }
+
+  h5 {
+    @apply text-base;
+    @apply uppercase;
+    @apply font-semibold;
+  }
+
+  h6 {
+    @apply text-sm;
+    @apply uppercase;
+    @apply font-semibold;
+  }
+}
