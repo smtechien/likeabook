@@ -1,7 +1,7 @@
-function parseElement(htmlString: string, tag: string): Element[] | null {
+function parseElement(htmlString: string, tag: string): HTMLElement[] | null {
   const parser = new DOMParser();
   const htmlDoc = parser.parseFromString(htmlString, 'text/html')
-  const htmlCollection = Array.from(htmlDoc.querySelectorAll(tag))
+  const htmlCollection = Array.from(htmlDoc.querySelectorAll<HTMLElement>(tag))
 
   if (htmlCollection.length === 0) {
     return null;

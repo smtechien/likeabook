@@ -2,6 +2,7 @@
   import parseElement from "@/utils/parseElement";
   import HorizontalContainer from "@/lib/HorizontalContainer.svelte";
   import TableOfContents from "@/lib/TableOfContents.svelte";
+  import Separator from "@/lib/Separator.svelte";
   import { onMount } from "svelte";
 
   interface ArticleData {
@@ -14,11 +15,12 @@
   }
 
   interface SectionData {
-    headers: Element[];
-    paragraphs: Element[];
+    headers: HTMLElement[];
+    paragraphs: HTMLElement[];
   }
 
   let dataSections: Array<SectionData> | null = $state([]);
+  let titleDiv: HTMLElement | null = $state(null);
 
   // Svelte 5 rune for reactive state management
   let article = $state<ArticleData | null>(null);
@@ -63,7 +65,8 @@
     <HorizontalContainer>
       <section
         class="flex-[0_0_100%] h-full gap-10 snap-center px-4"
-        id="titleSection"
+        id="titleDiv"
+        bind:this={titleDiv}
       >
         <h1>{article?.title}</h1>
         <div class="snap-center">{article.byline} | {article.siteName}</div>
@@ -76,13 +79,13 @@
           <!-- content here -->
           <div>
             {#each dataSection.headers as header}
-              <h2 class="text-center" id={header.textContent}>
+              <h2 id={header.textContent}>
                 {@html header.innerHTML}
               </h2>
               {#each dataSection.paragraphs as paragraph}
                 <p>{@html paragraph.innerHTML}</p>
               {/each}
-              <div class="">---</div>
+              <Separator {titleDiv} id={"separator" + header.textContent} />
             {/each}
           </div>
         {/each}
