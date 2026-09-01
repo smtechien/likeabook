@@ -23,7 +23,8 @@
     &:active:not(:disabled) {
       @apply translate-y-0;
       @apply scale-95;
-      @apply border-red-600;
+      @apply border-blue-500;
+      @apply text-blue-500;
     }
 
     &:disabled {

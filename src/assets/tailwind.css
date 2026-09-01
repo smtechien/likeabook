@@ -13,16 +13,39 @@
 }
 
 @layer base {
+
+  ::-moz-selection {
+    /* Code for Firefox */
+    @apply bg-blue-500;
+    @apply text-white;
+  }
+
+  ::selection {
+    @apply bg-blue-500;
+    @apply text-white;
+  }
+
   a {
     @apply text-blue-800;
   }
 
   p {
+    @apply snap-center;
     @apply font-serif;
     @apply text-justify;
+    @apply text-xl;
     @apply hyphens-auto;
+    @apply indent-4;
   }
 
+  /* section:has(h1, h2, h3, h4, h5, h6) { */
+  /*   color: red; */
+  /*   flex: 0 0 100%; */
+  /*   column-width: 100vw; */
+  /*   @apply h-full; */
+  /* } */
+  /**/
+  /**/
   h1 {
     @apply text-3xl;
     @apply font-bold;

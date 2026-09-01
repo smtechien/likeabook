@@ -47,15 +47,22 @@
   }
 </script>
 
-<!-- markup (zero or more items) goes here -->
 <div class="h-full w-full lg:w-1/2 flex flex-col gap-2">
+  <!-- START:content disisipkan di sini -->
+  <!-- <div -->
+  <!--   bind:this={container} -->
+  <!--   onscroll={handleScroll} -->
+  <!--   class="h-full snap-x snap-mandatory overflow-hidden [column-width:100vw]" -->
+  <!-- > -->
   <div
     bind:this={container}
     onscroll={handleScroll}
-    class="block h-full snap-x snap-mandatory overflow-hidden [column-width:100vw]"
+    class="flex flex-nowrap w-full h-full gap-10 snap-x snap-mandatory overflow-hidden"
   >
     {@render children?.()}
   </div>
+  <!-- END:content disisipkan di sini -->
+
   <div class="flex flex-row items-center justify-between">
     <Button disabled={currentPage === 1} onclick={prevPage}>Prev</Button>
     <p>Page {currentPage}/{totalPages}</p>
