@@ -4,6 +4,7 @@
 </script>
 
 <button
+  type="button"
   class="btn-interactive block cursor-pointer border px-4 py-2 text-sm"
   {disabled}
   {...restProps}>{@render children?.()}</button

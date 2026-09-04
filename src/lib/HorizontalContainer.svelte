@@ -57,7 +57,7 @@
   <div
     bind:this={container}
     onscroll={handleScroll}
-    class="flex flex-nowrap w-full h-full gap-10 snap-x snap-mandatory overflow-hidden"
+    class="flex flex-nowrap w-full h-full gap-10 snap-x snap-mandatory overflow-scroll"
   >
     {@render children?.()}
   </div>

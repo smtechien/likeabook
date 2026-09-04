@@ -14,6 +14,34 @@
 
 @layer base {
 
+  table {
+    display: none;
+  }
+
+  table,
+  tr,
+  td {
+    @apply border;
+  }
+
+  /* table, */
+  /* figure { */
+  /*   @apply hidden; */
+  /* } */
+  /**/
+
+  section,
+  div {
+    @apply snap-center;
+  }
+
+  figure {
+    @apply flex flex-col gap-2;
+    @apply items-center;
+    @apply p-2;
+  }
+
+
   ::-moz-selection {
     /* Code for Firefox */
     @apply bg-blue-500;
