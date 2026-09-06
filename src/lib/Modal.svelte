@@ -1,34 +1,46 @@
 <script lang="ts">
   import Button from "./Button.svelte";
-  let { children } = $props();
+
+  let { children, caption = "" } = $props();
 
   let show = $state(false);
 
   function toogleModal(event: Event) {
     event.preventDefault();
-    console.log(event);
     show = !show;
   }
 </script>
 
 <!-- markup (zero or more items) goes here -->
-<div class="p-4">
+<div class="m-4 flex items-center justify-center">
   {#if !show}
-    <Button onclick={(e: Event) => toogleModal(e)}>See figure</Button>
+    <Button onclick={(e: Event) => toogleModal(e)}>
+      <div class="flex flex-col items-start text-justify">
+        <strong class="text-sm"> Click to see </strong>
+        <snap class="text-sm">{caption}</snap>
+      </div>
+    </Button>
     <!-- content here -->
   {:else}
     <!-- else content here -->
-    <Button onclick={(e: Event) => toogleModal(e)}>Opened</Button>
+    <Button onclick={(e: Event) => toogleModal(e)}>
+      <div class="flex flex-col items-start text-justify">
+        <strong class="text-sm"> Click to see </strong>
+        <snap class="text-sm">{caption}</snap>
+      </div>
+    </Button>
   {/if}
 
   <dialog
     class:hidden={!show}
     class:flex={show}
-    class="fixed flex-col items-center justify-center gap-4 top-0 left-0 shadow-2xl w-full bg-black/25 h-full z-10 border transition-all ease-in-out"
+    class="fixed flex-col items-center justify-center gap-4 top-0 left-0 shadow-2xl w-full bg-black/25 h-full z-10 border p-4"
   >
-    <div class="flex flex-col gap-2 border bg-gray-50 min-w-50">
-      <div class="p-2 border-b border-gray-600">Title</div>
-      <div class="p-2">
+    <div
+      class="flex flex-col gap-2 border bg-gray-50 min-w-50 max-w-full md:max-w-3/4 lg:max-w-1/2 max-h-full p-4 overflow-scroll"
+    >
+      <div class="p-2 border-b border-gray-600">Figure</div>
+      <div class="p-2 figure">
         {@render children?.()}
       </div>
       <div class="flex flex-col w-full p-2">

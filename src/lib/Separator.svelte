@@ -1,6 +1,6 @@
 <script lang="ts">
   interface Props {
-    titleDiv: HTMLElement;
+    titleDiv: HTMLElement | null;
     id: string;
   }
 
@@ -8,12 +8,19 @@
   let separatorDiv: HTMLElement | null = $state(null);
   let height: number = $state(0);
 
-  $effect(() => {
+  function countHeight() {
     if (separatorDiv && titleDiv) {
       height =
         titleDiv.clientHeight - (separatorDiv.offsetTop - titleDiv?.offsetTop);
       separatorDiv.style.height = height + "px";
     }
+  }
+
+  $effect(() => {
+    if (separatorDiv) {
+      countHeight();
+    }
+    window.addEventListener("resize", countHeight);
   });
 </script>
 

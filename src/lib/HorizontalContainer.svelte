@@ -1,7 +1,7 @@
 <script lang="ts">
   import Button from "./Button.svelte";
   // your script goes here
-  let { children } = $props();
+  let { children, loaded = $bindable() } = $props();
   let container: any = $state();
   let containerWidth = $state(0);
   let scrollWidth = $state(0);
@@ -15,16 +15,19 @@
     containerWidth > 0 ? Math.floor(scrollWidth / containerWidth) : 1,
   );
 
-  $effect(() => {
-    const updateMetrics = () => {
-      containerWidth = container.clientWidth;
-      scrollWidth = container.scrollWidth;
-      scrollLeft = container.scrollLeft;
-    };
+  function updateMetrics() {
+    containerWidth = container.clientWidth;
+    scrollWidth = container.scrollWidth;
+    scrollLeft = container.scrollLeft;
+  }
 
+  $effect(() => {
     // Set nilai awal
     updateMetrics();
     window.addEventListener("resize", updateMetrics);
+    if (loaded) {
+      updateMetrics();
+    }
     return () => window.removeEventListener("resize", updateMetrics);
   });
 
@@ -47,7 +50,7 @@
   }
 </script>
 
-<div class="h-full w-full lg:w-1/2 flex flex-col gap-2">
+<div class="h-full w-full md:w-3/4 lg:w-1/2 flex flex-col gap-2">
   <!-- START:content disisipkan di sini -->
   <!-- <div -->
   <!--   bind:this={container} -->

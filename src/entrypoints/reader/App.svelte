@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, createRawSnippet, mount } from "svelte";
+  import { onMount, mount } from "svelte";
   import parseElement from "@/utils/parseElement";
   import HorizontalContainer from "@/lib/HorizontalContainer.svelte";
   import TableOfContents from "@/lib/TableOfContents.svelte";
@@ -17,7 +17,9 @@
 
   let article = $state<ArticleData | null>(null);
   let container: HTMLElement | null = $state(null);
-
+  let loadedState = $state(false);
+  let isResizing = $state(false);
+  let timeoutId: ReturnType<typeof setTimeout> | null = $state(null);
   onMount(async () => {
     // Retrieve parsed article payload from local extension storage
     const data: any = await browser.storage.local.get(["activeArticle"]);
@@ -35,25 +37,67 @@
     });
   }
 
+  function handleResize() {
+    isResizing = true;
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      isResizing = false;
+    }, 150);
+  }
+
   $effect(() => {
-    if (container) {
+    if (container && article) {
+      const images = container.querySelectorAll("p img");
+      images.forEach((image) => {
+        const wrapper = document.createElement("div");
+        image.replaceWith(wrapper);
+        wrapElement(wrapper, image);
+      });
       const figures = container.querySelectorAll("figure");
       figures.forEach((figure) => {
         const wrapper = document.createElement("div");
-        console.log(figure);
         figure.replaceWith(wrapper);
         wrapElement(wrapper, figure);
       });
+      const headings = container.querySelectorAll("section:has(h2)");
+      headings.forEach((heading) => {
+        const h2 = heading.querySelector("h2");
+        const wrapper = document.createElement("div");
+        // heading.replaceWith(wrapper);
+        const parentNode = h2?.parentNode;
+        parentNode?.insertBefore(wrapper, h2);
+        // heading.appendChild(wrapper);
+        mount(Separator, {
+          target: wrapper,
+          props: {
+            titleDiv: container,
+            id: heading.id,
+          },
+        });
+      });
+      loadedState = true;
     }
   });
 </script>
+
+<svelte:window onresize={handleResize} />
+{#if isResizing}
+  <main
+    class="h-screen w-screen flex items-center justify-center p-8 overflow-hidden"
+    id="mainContainer"
+  >
+    <p>Resizing component, please wait...</p>
+  </main>
+{/if}
 
 <main
   class="h-screen w-screen flex items-center justify-center p-8 overflow-hidden"
   id="mainContainer"
 >
-  {#if article}
-    <HorizontalContainer>
+  {#if article && !isResizing}
+    <HorizontalContainer bind:loaded={loadedState}>
       <section class="flex-[0_0_100%] h-full snap-center" id="titleDiv">
         <h1>{article?.title}</h1>
         <div class="snap-center">{article.byline} | {article.siteName}</div>
@@ -65,6 +109,9 @@
         {@html article.content}
       </div>
     </HorizontalContainer>
+  {/if}
+  {#if !article && !isResizing}
+    <p>Load document, please wait...</p>
   {/if}
 </main>
 

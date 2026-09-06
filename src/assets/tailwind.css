@@ -35,12 +35,11 @@
     @apply snap-center;
   }
 
-  figure {
-    @apply flex flex-col gap-2;
+  .figure>figure {
+    @apply flex flex-col gap-4;
     @apply items-center;
-    @apply p-2;
+    @apply justify-center;
   }
-
 
   ::-moz-selection {
     /* Code for Firefox */
@@ -63,7 +62,6 @@
     @apply text-justify;
     @apply text-xl;
     @apply hyphens-auto;
-    @apply indent-4;
   }
 
   /* section:has(h1, h2, h3, h4, h5, h6) { */

@@ -1,10 +1,11 @@
 <script lang="ts">
   // your script goes here
-  let { children, disabled = false, ...restProps } = $props();
+  let { children, disabled = false, full = false, ...restProps } = $props();
 </script>
 
 <button
   type="button"
+  class:w-full={full}
   class="btn-interactive block cursor-pointer border px-4 py-2 text-sm"
   {disabled}
   {...restProps}>{@render children?.()}</button
