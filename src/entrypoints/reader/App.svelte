@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, mount } from "svelte";
+  import { tick, onMount, mount } from "svelte";
   import parseElement from "@/utils/parseElement";
   import HorizontalContainer from "@/lib/HorizontalContainer.svelte";
   import TableOfContents from "@/lib/TableOfContents.svelte";
@@ -38,6 +38,7 @@
   }
 
   function handleResize() {
+    loadedState = false;
     isResizing = true;
     if (timeoutId) {
       clearTimeout(timeoutId);
@@ -47,37 +48,42 @@
     }, 150);
   }
 
+  function elementManipulation(): boolean {
+    const images = container?.querySelectorAll("p img");
+    images?.forEach((image) => {
+      const wrapper = document.createElement("div");
+      image.replaceWith(wrapper);
+      wrapElement(wrapper, image);
+    });
+    const figures = container?.querySelectorAll("figure");
+    figures?.forEach((figure) => {
+      const wrapper = document.createElement("div");
+      figure.replaceWith(wrapper);
+      wrapElement(wrapper, figure);
+    });
+    const headings = container?.querySelectorAll("section:has(h2)");
+    headings?.forEach((heading) => {
+      const h2 = heading.querySelector("h2");
+      const wrapper = document.createElement("div");
+      const parentNode = h2?.parentNode;
+      parentNode?.insertBefore(wrapper, h2);
+      mount(Separator, {
+        target: wrapper,
+        props: {
+          titleDiv: container,
+          id: heading.id,
+        },
+      });
+    });
+    return true;
+  }
+
   $effect(() => {
-    if (container && article) {
-      const images = container.querySelectorAll("p img");
-      images.forEach((image) => {
-        const wrapper = document.createElement("div");
-        image.replaceWith(wrapper);
-        wrapElement(wrapper, image);
+    if (container && article && !isResizing) {
+      elementManipulation();
+      tick().then(() => {
+        loadedState = true;
       });
-      const figures = container.querySelectorAll("figure");
-      figures.forEach((figure) => {
-        const wrapper = document.createElement("div");
-        figure.replaceWith(wrapper);
-        wrapElement(wrapper, figure);
-      });
-      const headings = container.querySelectorAll("section:has(h2)");
-      headings.forEach((heading) => {
-        const h2 = heading.querySelector("h2");
-        const wrapper = document.createElement("div");
-        // heading.replaceWith(wrapper);
-        const parentNode = h2?.parentNode;
-        parentNode?.insertBefore(wrapper, h2);
-        // heading.appendChild(wrapper);
-        mount(Separator, {
-          target: wrapper,
-          props: {
-            titleDiv: container,
-            id: heading.id,
-          },
-        });
-      });
-      loadedState = true;
     }
   });
 </script>

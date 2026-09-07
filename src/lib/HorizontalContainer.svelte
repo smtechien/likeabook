@@ -22,13 +22,9 @@
   }
 
   $effect(() => {
-    // Set nilai awal
-    updateMetrics();
-    window.addEventListener("resize", updateMetrics);
     if (loaded) {
       updateMetrics();
     }
-    return () => window.removeEventListener("resize", updateMetrics);
   });
 
   function handleScroll() {
@@ -50,6 +46,7 @@
   }
 </script>
 
+<svelte:window onresize={updateMetrics} />
 <div class="h-full w-full md:w-3/4 lg:w-1/2 flex flex-col gap-2">
   <!-- START:content disisipkan di sini -->
   <!-- <div -->
