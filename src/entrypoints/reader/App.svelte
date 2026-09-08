@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tick, onMount, mount } from "svelte";
-  import parseElement from "@/utils/parseElement";
+  // import parseElement from "@/utils/parseElement";
   import HorizontalContainer from "@/lib/HorizontalContainer.svelte";
   import TableOfContents from "@/lib/TableOfContents.svelte";
   import Separator from "@/lib/Separator.svelte";
@@ -20,6 +20,8 @@
   let loadedState = $state(false);
   let isResizing = $state(false);
   let timeoutId: ReturnType<typeof setTimeout> | null = $state(null);
+  let headings: NodeListOf<Element> | null = $state(null);
+
   onMount(async () => {
     // Retrieve parsed article payload from local extension storage
     const data: any = await browser.storage.local.get(["activeArticle"]);
@@ -46,6 +48,14 @@
     timeoutId = setTimeout(() => {
       isResizing = false;
     }, 150);
+  }
+
+  function parseHeadings(): NodeListOf<Element> | null {
+    const headings = container?.querySelectorAll("h2, h3, h4, h5, h6");
+    if (headings && headings.length > 0) {
+      return headings;
+    }
+    return null;
   }
 
   function elementManipulation(): boolean {
@@ -81,6 +91,7 @@
   $effect(() => {
     if (container && article && !isResizing) {
       elementManipulation();
+      headings = parseHeadings();
       tick().then(() => {
         loadedState = true;
       });
@@ -103,6 +114,7 @@
   id="mainContainer"
 >
   {#if article && !isResizing}
+    <TableOfContents {headings} />
     <HorizontalContainer bind:loaded={loadedState}>
       <section class="flex-[0_0_100%] h-full snap-center" id="titleDiv">
         <h1>{article?.title}</h1>

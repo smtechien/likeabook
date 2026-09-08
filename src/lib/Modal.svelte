@@ -5,16 +5,21 @@
 
   let show = $state(false);
 
-  function toogleModal(event: Event) {
+  function closeModal(event: Event) {
     event.preventDefault();
-    show = !show;
+    show = false;
+  }
+
+  function openModal(event: Event) {
+    event.preventDefault();
+    show = true;
   }
 </script>
 
 <!-- markup (zero or more items) goes here -->
 <div class="m-4 flex items-center justify-center">
   {#if !show}
-    <Button onclick={(e: Event) => toogleModal(e)}>
+    <Button onclick={(e: Event) => openModal(e)}>
       <div class="flex flex-col items-start text-justify">
         <strong class="text-sm"> Click to see </strong>
         <snap class="text-sm">{caption}</snap>
@@ -23,9 +28,9 @@
     <!-- content here -->
   {:else}
     <!-- else content here -->
-    <Button onclick={(e: Event) => toogleModal(e)}>
+    <Button onclick={(e: Event) => openModal(e)}>
       <div class="flex flex-col items-start text-justify">
-        <strong class="text-sm"> Click to see </strong>
+        <strong class="text-sm"> Opened</strong>
         <snap class="text-sm">{caption}</snap>
       </div>
     </Button>
@@ -33,6 +38,9 @@
 
   <dialog
     class:hidden={!show}
+    onclick={(e) => {
+      closeModal(e);
+    }}
     class:flex={show}
     class="fixed flex-col items-center justify-center gap-4 top-0 left-0 shadow-2xl w-full bg-black/25 h-full z-10 border p-4"
   >
@@ -44,7 +52,11 @@
         {@render children?.()}
       </div>
       <div class="flex flex-col w-full p-2">
-        <Button onclick={toogleModal}>Close</Button>
+        <Button
+          onclick={(e: Event) => {
+            closeModal(e);
+          }}>Close</Button
+        >
       </div>
     </div>
   </dialog>

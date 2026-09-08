@@ -61,6 +61,7 @@
     @apply font-serif;
     @apply text-justify;
     @apply text-xl;
+    @apply mb-4;
     @apply hyphens-auto;
   }
 
