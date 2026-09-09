@@ -30,11 +30,18 @@
     }
   });
 
-  function wrapElement(wrapper: HTMLElement, content: HTMLElement | Element) {
+  function wrapElement(
+    wrapper: HTMLElement,
+    content: HTMLElement | Element,
+    caption: string,
+    title: string,
+  ) {
     mount(ModalWrapper, {
       target: wrapper,
       props: {
         children: content,
+        caption: caption,
+        title: title,
       },
     });
   }
@@ -59,17 +66,23 @@
   }
 
   function elementManipulation(): boolean {
-    const images = container?.querySelectorAll("p img");
+    const images = container?.querySelectorAll("p img:not(table img)");
     images?.forEach((image) => {
       const wrapper = document.createElement("div");
       image.replaceWith(wrapper);
-      wrapElement(wrapper, image);
+      wrapElement(wrapper, image, "An Image", "Image");
     });
     const figures = container?.querySelectorAll("figure");
     figures?.forEach((figure) => {
       const wrapper = document.createElement("div");
       figure.replaceWith(wrapper);
-      wrapElement(wrapper, figure);
+      wrapElement(wrapper, figure, figure.innerText, "Figure");
+    });
+    const tables = container?.querySelectorAll("table");
+    tables?.forEach((table) => {
+      const wrapper = document.createElement("div");
+      table.replaceWith(wrapper);
+      wrapElement(wrapper, table, "A Table", "Table");
     });
     const headings = container?.querySelectorAll("section:has(h2)");
     headings?.forEach((heading) => {

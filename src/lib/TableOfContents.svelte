@@ -4,16 +4,11 @@
   }
   // your script goes here
   let { headings }: Props = $props();
-  $effect(() => {
-    if (headings) {
-      console.log(headings)
-    }
-  })
 </script>
 
 {#if headings != null}
 <div class="fixed top-0 py-8 left-4 w-fit-content h-full overflow-scroll scrollbar-track-white">
-<h2 id="toc">Table of contents</h2>
+<h4 id="toc">Table of contents</h4>
   <ul>
     {#each headings as heading}
       {const text = heading.textContent;}

@@ -4,7 +4,7 @@
 </script>
 
 <!-- markup (zero or more items) goes here -->
-<Modal caption={rest.children.innerText}>
+<Modal caption={rest.caption} title={rest.title}>
   {@html rest.children.outerHTML}
 </Modal>
 

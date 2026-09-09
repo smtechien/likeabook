@@ -14,14 +14,22 @@
 
 @layer base {
 
-  table {
-    display: none;
-  }
-
-  table,
   tr,
   td {
     @apply border;
+  }
+
+  td,
+  th {
+    @apply p-2;
+  }
+
+  th,
+  th p,
+  td p {
+    @apply text-sm;
+    @apply text-left;
+    @apply font-sans;
   }
 
   /* table, */
@@ -56,12 +64,15 @@
     @apply text-blue-800;
   }
 
+  #h-container p:not(table p) {
+    @apply mb-4;
+  }
+
   p {
     @apply snap-center;
     @apply font-serif;
     @apply text-justify;
     @apply text-xl;
-    @apply mb-4;
     @apply hyphens-auto;
   }
 
